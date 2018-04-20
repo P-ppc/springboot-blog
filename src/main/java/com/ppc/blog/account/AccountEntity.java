@@ -3,25 +3,35 @@ package com.ppc.blog.account;
 import javax.persistence.*;
 import java.util.Date;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.ColumnTransformer;
 
 @Entity
 @Table(name = "t_account")
 @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
 public class AccountEntity {
+  @Id
+  @GeneratedValue(generator = "uuid2")
+  @Column(length = 36)
   private String id;
+
+  @Column(nullable = false, updatable = false, length = 10) 
   private String userName;
+
+  @Column(nullable = false, length = 60) 
   private String password;
+
+  @Column(nullable = false, length = 25)
   private String email;
+
+  @Column(nullable = false, updatable = false)
   private Date createdTime;
+
   private Date updatedTime;  
 
   public void setId(String id) {
     this.id = id;
   }
 
-  @Id
-  @GeneratedValue(generator = "uuid2")
-  @Column(length = 32)
   public String getId() {
     return id;
   }
@@ -30,7 +40,6 @@ public class AccountEntity {
     this.userName = userName;
   }
 
-  @Column(nullable = false, updatable = false, length = 10) 
   public String getUserName() {
     return userName;
   }
@@ -39,7 +48,6 @@ public class AccountEntity {
     this.password = password;
   }
 
-  @Column(nullable = false, length = 15) 
   public String getPassword() {
     return password; 
   }
@@ -48,7 +56,6 @@ public class AccountEntity {
     this.email = email;
   }
 
-  @Column(nullable = false, length = 25)
   public String getEmail() {
     return email;
   }
@@ -57,7 +64,6 @@ public class AccountEntity {
     this.createdTime = createdTime;
   }
 
-  @Column(nullable = false, updatable = false)
   public Date getCreatedTime() {
     return createdTime;
   }
