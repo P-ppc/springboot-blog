@@ -1,9 +1,11 @@
 package com.ppc.blog.account;
 
-import javax.persistence.*;
 import java.util.Date;
+
+import javax.persistence.*;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.ColumnTransformer;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "t_account")
@@ -18,6 +20,7 @@ public class AccountEntity {
   private String userName;
 
   @Column(nullable = false, length = 60) 
+  @JsonIgnore
   private String password;
 
   @Column(nullable = false, length = 25)

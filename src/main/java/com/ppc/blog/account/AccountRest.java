@@ -11,7 +11,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import com.alibaba.fastjson.JSONObject;
 
 import com.ppc.blog.account.AccountEntity;
 import com.ppc.blog.common.Response;
