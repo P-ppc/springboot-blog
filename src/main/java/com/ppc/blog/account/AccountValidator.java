@@ -6,7 +6,7 @@ import org.hibernate.validator.constraints.Email;
 import javax.validation.constraints.Size;
 
 @ScriptAssert(lang = "javascript",
-  script = "com.ppc.blog.account.validator.AccountValidator.checkRepeatPassword(_this.password, _this.repeatPassword)",
+  script = "com.ppc.blog.account.AccountValidator.checkRepeatPassword(_this.password, _this.repeatPassword)",
   message = "repeatPassword must be same with password")
 
 public class AccountValidator {
