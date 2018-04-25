@@ -2,6 +2,8 @@ package com.ppc.blog.account;
 
 import java.util.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.Cookie;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,7 +25,10 @@ public class AccountRest {
   private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
   
   @RequestMapping(value = "/signUp", method = RequestMethod.POST)
-  public Response signUp(@RequestBody @Validated AccountValidator account) {
+  public Response signUp(
+    @RequestBody
+    @Validated(value = AccountValidator.SignUpGroup.class) 
+    AccountValidator account) {
     List<AccountEntity> accountList = accountDAO.findByUserNameOrEmail(account.getUserName(), account.getEmail());
     if (accountList.size() > 0) {
       return new Response("ACCOUNT_KEY_OCCUPY", "userName or email has been used");
@@ -38,13 +43,27 @@ public class AccountRest {
   }
 
   @RequestMapping(value = "/signIn", method = RequestMethod.POST)
-  public Response signIn() {
-    return new Response("COMM_API_UNIMPLEMENT", "this api is unimplement");
+  public Response signIn(
+    @RequestBody
+    @Validated(value = AccountValidator.SignInGroup.class)
+    AccountValidator account,
+    HttpServletRequest request) {
+    List<AccountEntity> accountList = accountDAO.findByUserName(account.getUserName());
+    if (accountList.size() != 1) {
+      return new Response("COMM_ERROR_VALID", "userName or password error");
+    }
+    AccountEntity accountEntity = accountList.get(0);
+    if (!passwordEncoder.matches(account.getPassword(), accountEntity.getPassword())) {
+      return new Response("COMM_ERROR_VALID", "userName or password error");
+    }
+    request.getSession().setAttribute("currentUser", accountEntity);
+    return new Response(accountEntity);
   }
 
   @RequestMapping(value = "/signOut", method = RequestMethod.GET)
-  public Response signOut() {
-    return new Response("COMM_API_UNIMPLEMENT", "this api is unimplement");
+  public Response signOut(HttpServletRequest request) {
+    request.getSession().invalidate();
+    return new Response(true);
   }
 
   @RequestMapping(value = "/accounts/:id", method = RequestMethod.GET)

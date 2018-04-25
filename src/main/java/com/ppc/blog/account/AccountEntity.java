@@ -1,6 +1,7 @@
 package com.ppc.blog.account;
 
 import java.util.Date;
+import java.io.Serializable;
 
 import javax.persistence.*;
 import org.hibernate.annotations.GenericGenerator;
@@ -10,7 +11,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Entity
 @Table(name = "t_account")
 @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
-public class AccountEntity {
+public class AccountEntity implements Serializable {
+  private static final long serialVersionUID = 1L;
+
   @Id
   @GeneratedValue(generator = "uuid2")
   @Column(length = 36)

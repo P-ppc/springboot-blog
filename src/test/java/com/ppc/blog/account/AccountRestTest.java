@@ -4,7 +4,9 @@ import com.alibaba.fastjson.JSONObject;
 import org.junit.Before;
 import org.junit.After;
 import org.junit.Test;
+import org.junit.FixMethodOrder;
 import org.junit.runner.RunWith;
+import org.junit.runners.MethodSorters;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -16,6 +18,7 @@ import org.springframework.http.MediaType;
 
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -23,6 +26,7 @@ import com.ppc.blog.account.AccountDAO;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class AccountRestTest {
   @Autowired
   private WebApplicationContext context;
@@ -44,13 +48,9 @@ public class AccountRestTest {
     params.put("repeatPassword", "password");
   }
 
-  @After
-  public void tearDown() throws Exception {
-    accountDAO.deleteAll();
-  }
-  
   @Test
-  public void shouldReturnError() throws Exception {
+  public void AShouldReturnError() throws Exception {
+    System.out.println("1: -------------------------");
     mockMvc.perform(post("/signUp"))
       .andExpect(status().isOk())
       .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
@@ -58,7 +58,8 @@ public class AccountRestTest {
   }
 
   @Test
-  public void shouldNotPassValid() throws Exception {
+  public void BShouldNotPassValid() throws Exception {
+    System.out.println("2: -------------------------");
     JSONObject params = new JSONObject();
     params.put("userName", "ppc");
 
@@ -70,27 +71,51 @@ public class AccountRestTest {
   }
 
   @Test
-  public void shouldSuccess() throws Exception {
+  public void CShouldSuccess() throws Exception {
+    System.out.println("3: -------------------------");
     mockMvc.perform(post("/signUp")
       .contentType(MediaType.APPLICATION_JSON_UTF8)
       .content(params.toString()))
       .andExpect(status().isOk())
       .andExpect(jsonPath("$.data.id").exists());
-    
   }
 
   @Test
-  public void shouldOccupy() throws Exception {
-    mockMvc.perform(post("/signUp")
-      .contentType(MediaType.APPLICATION_JSON_UTF8)
-      .content(params.toString()))
-      .andExpect(status().isOk())
-      .andExpect(jsonPath("$.data.id").exists());
-
+  public void DShouldOccupy() throws Exception {
+    System.out.println("4: -------------------------");
     mockMvc.perform(post("/signUp")
       .contentType(MediaType.APPLICATION_JSON_UTF8)
       .content(params.toString()))
       .andExpect(status().isOk())
       .andExpect(jsonPath("$.error.code", is("ACCOUNT_KEY_OCCUPY")));
+  }
+
+  @Test
+  public void EShouldSignInSuccess() throws Exception {
+    System.out.println("5: -------------------------");
+    JSONObject params = new JSONObject();
+    params.put("userName", "ppc");
+    params.put("password", "password");
+
+    mockMvc.perform(post("/signIn")
+      .contentType(MediaType.APPLICATION_JSON_UTF8)
+      .content(params.toString()))
+      .andExpect(status().isOk())
+      .andDo(print())
+      .andExpect(jsonPath("$.data.id").exists());
+  }
+
+  @Test
+  public void FShouldSignOutSuccess() throws Exception {
+    System.out.println("6: -------------------------");
+    mockMvc.perform(get("/signOut"))
+      .andExpect(status().isOk())
+      .andExpect(jsonPath("$.data", is(true)));
+  }
+
+  @Test
+  public void ZTearDown() throws Exception {
+    System.out.println("TearDown: -------------------------");
+    accountDAO.deleteAll();
   }
 }

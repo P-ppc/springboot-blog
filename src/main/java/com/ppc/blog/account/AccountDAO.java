@@ -14,7 +14,6 @@ import com.ppc.blog.account.AccountEntity;
 public interface AccountDAO
 extends JpaSpecificationExecutor<AccountEntity>,
         CrudRepository<AccountEntity, String> {
-  List<AccountEntity> findByUserNameAndPassword(String userName, String password);
-
   List<AccountEntity> findByUserNameOrEmail(String userName, String email);
+  List<AccountEntity> findByUserName(String userName);
 }

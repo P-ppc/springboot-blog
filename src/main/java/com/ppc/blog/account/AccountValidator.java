@@ -7,20 +7,21 @@ import javax.validation.constraints.Size;
 
 @ScriptAssert(lang = "javascript",
   script = "com.ppc.blog.account.AccountValidator.checkRepeatPassword(_this.password, _this.repeatPassword)",
-  message = "repeatPassword must be same with password")
+  message = "repeatPassword must be same with password",
+  groups = { AccountValidator.SignUpGroup.class } )
 
 public class AccountValidator {
-  @NotBlank(message = "userName must not be empty")
-  @Size(min = 3, max = 10, message = "userName length must between 3 ~ 10")
+  @NotBlank(message = "userName must not be empty", groups = { SignUpGroup.class, SignInGroup.class })
+  @Size(min = 3, max = 10, message = "userName length must between 3 ~ 10", groups = { SignUpGroup.class, SignInGroup.class })
   private String userName;
 
-  @NotBlank(message = "email must not be empty")
-  @Email(message = "email must be a validate email")
-  @Size(min = 6, max = 15, message = "email length must between 6 ~ 15")
+  @NotBlank(message = "email must not be empty", groups = { SignUpGroup.class })
+  @Email(message = "email must be a validate email", groups = { SignUpGroup.class })
+  @Size(min = 6, max = 15, message = "email length must between 6 ~ 15", groups = { SignUpGroup.class })
   private String email;
 
-  @NotBlank(message = "password must not be empty")
-  @Size(min = 6, max = 15, message = "password length must between 6 ~ 15")
+  @NotBlank(message = "password must not be empty", groups = { SignUpGroup.class, SignInGroup.class })
+  @Size(min = 6, max = 15, message = "password length must between 6 ~ 15", groups = { SignUpGroup.class, SignInGroup.class })
   private String password;
 
   private String repeatPassword;
@@ -63,4 +64,7 @@ public class AccountValidator {
     }
     return false;
   }
+
+  public interface SignUpGroup {}
+  public interface SignInGroup {}
 }
