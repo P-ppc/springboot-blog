@@ -16,12 +16,14 @@ public class GlobalExceptionHandler {
   public Response methodArgumentNotValidHandler(HttpServletRequest req,
     MethodArgumentNotValidException exception) throws Exception {
     /* 只显示第一个字段的错误信息 */
+    /* TODO: 采用fase_mode进行校验 */
     ObjectError error = exception.getBindingResult().getAllErrors().get(0); 
     return new Response("COMM_ERROR_VALID", error.getDefaultMessage());
   }
 
   @ExceptionHandler(value = Exception.class)
   public Response handler(HttpServletRequest req, Exception exception) {
+    exception.printStackTrace();
     return new Response("COMM_ERROR_UNKNOWN", "something bad happend");
   }
 }
