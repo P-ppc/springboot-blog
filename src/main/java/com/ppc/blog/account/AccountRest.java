@@ -76,13 +76,48 @@ public class AccountRest {
     return new Response("COMM_ERROR_NOTFOUND", "not found account");
   }
   
-  @RequestMapping(value = "/accounts/:id", method = RequestMethod.PUT)
-  public Response updateAccount() {
-    return new Response("COMM_API_UNIMPLEMENT", "this api is unimplement");
+  @RequestMapping(value = "/accounts/{id}", method = RequestMethod.PUT)
+  public Response updateAccount(
+    @PathVariable("id") 
+    String id,
+    @RequestBody
+    @Validated(value = AccountValidator.UpdateGroup.class)
+    AccountValidator account,
+    HttpServletRequest request) {
+    AccountEntity accountEntity = (AccountEntity) request.getSession().getAttribute("currentUser");
+    if (accountEntity == null) {
+      return new Response("COMM_ERROR_UNLOGIN", "you have not login");
+    } else if (!accountEntity.getId().equals(id)) {
+      System.out.println(accountEntity.getId());
+      return new Response("COMM_ERROR_NOPERMISSION", "you can't update this account"); 
+    }
+    accountEntity.setEmail(account.getEmail());
+    accountEntity.setUpdatedTime(new Date());
+    accountDAO.save(accountEntity);
+    request.getSession().setAttribute("currentUser", accountEntity);
+    return new Response(accountEntity);
   }
 
-  @RequestMapping(value = "/accounts/:id/password", method = RequestMethod.PUT)
-  public Response updatePassword() {
-    return new Response("COMM_API_UNIMPLEMENT", "this api is unimplement");
+  @RequestMapping(value = "/accounts/{id}/password", method = RequestMethod.PUT)
+  public Response updatePassword(
+    @PathVariable("id")
+    String id,
+    @RequestBody
+    @Validated(value = AccountValidator.UpdatePasswordGroup.class)
+    AccountValidator account,
+    HttpServletRequest request) {
+    AccountEntity accountEntity = (AccountEntity) request.getSession().getAttribute("currentUser");
+    if (accountEntity == null) {
+      return new Response("COMM_ERROR_NOTFOUND", "you have not login");
+    } else if (!accountEntity.getId().equals(id)) {
+      return new Response("COMM_ERROR_NOPERMISSION", "you can't update this account"); 
+    } else if (!passwordEncoder.matches(account.getOldPassword(), accountEntity.getPassword())) {
+      return new Response("COMM_ERROR_VALID", "old password error!");
+    }
+    accountEntity.setPassword(passwordEncoder.encode(account.getPassword()));
+    accountEntity.setUpdatedTime(new Date());
+    accountDAO.save(accountEntity);
+    request.getSession().setAttribute("currentUser", accountEntity);
+    return new Response(accountEntity);
   }
 }
