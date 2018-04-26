@@ -16,4 +16,5 @@ extends JpaSpecificationExecutor<AccountEntity>,
         CrudRepository<AccountEntity, String> {
   List<AccountEntity> findByUserNameOrEmail(String userName, String email);
   List<AccountEntity> findByUserName(String userName);
+  AccountEntity findOneById(String id);
 }

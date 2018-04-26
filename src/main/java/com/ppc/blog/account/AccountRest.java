@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
@@ -66,9 +67,13 @@ public class AccountRest {
     return new Response(true);
   }
 
-  @RequestMapping(value = "/accounts/:id", method = RequestMethod.GET)
-  public Response getAccount() {
-    return new Response("COMM_API_UNIMPLEMENT", "this api is unimplement");
+  @RequestMapping(value = "/accounts/{id}", method = RequestMethod.GET)
+  public Response getAccount(@PathVariable("id") String id) {
+    AccountEntity accountEntity = accountDAO.findOneById(id);
+    if (accountEntity != null) {
+      return new Response(accountEntity);
+    }
+    return new Response("COMM_ERROR_NOTFOUND", "not found account");
   }
   
   @RequestMapping(value = "/accounts/:id", method = RequestMethod.PUT)
@@ -78,11 +83,6 @@ public class AccountRest {
 
   @RequestMapping(value = "/accounts/:id/password", method = RequestMethod.PUT)
   public Response updatePassword() {
-    return new Response("COMM_API_UNIMPLEMENT", "this api is unimplement");
-  }
-
-  @RequestMapping(value = "/accounts/:id/passwordreset", method = RequestMethod.POST)
-  public Response resetPassword() {
     return new Response("COMM_API_UNIMPLEMENT", "this api is unimplement");
   }
 }
