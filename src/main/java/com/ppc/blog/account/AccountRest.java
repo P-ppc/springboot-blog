@@ -3,7 +3,6 @@ package com.ppc.blog.account;
 import java.util.*;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.Cookie;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,12 +10,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import com.ppc.blog.account.AccountEntity;
 import com.ppc.blog.common.Response;
+import com.ppc.blog.account.AccountEntity;
+import com.ppc.blog.account.AccountDAO;
 import com.ppc.blog.account.AccountValidator;
 
 @RestController
@@ -88,7 +86,6 @@ public class AccountRest {
     if (accountEntity == null) {
       return new Response("COMM_ERROR_UNLOGIN", "you have not login");
     } else if (!accountEntity.getId().equals(id)) {
-      System.out.println(accountEntity.getId());
       return new Response("COMM_ERROR_NOPERMISSION", "you can't update this account"); 
     }
     accountEntity.setEmail(account.getEmail());

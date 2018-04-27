@@ -5,7 +5,6 @@ import java.io.Serializable;
 
 import javax.persistence.*;
 import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.ColumnTransformer;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
