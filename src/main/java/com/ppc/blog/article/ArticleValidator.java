@@ -1,10 +1,10 @@
 package com.ppc.blog.article;
 
-import org.hibernate.validator.constraints.Range;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.validation.constraints.Min;
+import org.hibernate.validator.constraints.Range;
 
 public class ArticleValidator {
   @NotBlank(message = "title must not be empty", groups = { CreateGroup.class, UpdateGroup.class })

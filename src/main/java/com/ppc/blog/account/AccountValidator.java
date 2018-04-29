@@ -1,9 +1,9 @@
 package com.ppc.blog.account;
 
-import org.hibernate.validator.constraints.ScriptAssert;
-import org.hibernate.validator.constraints.NotBlank;
-import org.hibernate.validator.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.Size;
+import org.hibernate.validator.constraints.ScriptAssert;
 
 @ScriptAssert(lang = "javascript",
   script = "com.ppc.blog.account.AccountValidator.checkRepeatPassword(_this.password, _this.repeatPassword)",
