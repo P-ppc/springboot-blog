@@ -1,6 +1,6 @@
 package com.ppc.blog.article;
 
-import java.unit.Date;
+import java.util.Date;
 import java.io.Serializable;
 
 import javax.persistence.*;
@@ -19,7 +19,7 @@ public class ArticleEntity implements Serializable {
   private AccountEntity author;
   
   @Id
-  @GenericGenerator(generator = "uuid2")
+  @GeneratedValue(generator = "uuid2")
   @Column(length = 36)
   private String id;
 

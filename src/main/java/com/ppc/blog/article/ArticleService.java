@@ -13,13 +13,15 @@ import javax.persistence.criteria.Root;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.apache.commons.lang3.StringUtils;
 
 import com.ppc.blog.article.ArticleEntity;
 import com.ppc.blog.article.ArticleDAO;
 
+@Service
 public class ArticleService {
-  @AutoWired
+  @Autowired
   private ArticleDAO articleDAO;
   
   private Sort sort = new Sort(Sort.Direction.DESC, "createdTime");
@@ -44,7 +46,7 @@ public class ArticleService {
         }
         return predicate;
       }
-    }
+    };
   }
 
   public List<ArticleEntity> query(Map<String, String> queryParams) {
@@ -52,7 +54,7 @@ public class ArticleService {
   }
 
   public Page<ArticleEntity> query(Map<String, String> queryParams, int page, int pageSize) {
-    Pageable pageable = new PageRequest(page, size, sort);
+    Pageable pageable = new PageRequest(page, pageSize, sort);
     return articleDAO.findAll(Specifications.where(getWhereClause(queryParams)), pageable);
   }
 }
