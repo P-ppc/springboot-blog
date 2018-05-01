@@ -54,7 +54,7 @@ public class ArticleService {
   }
 
   public Page<ArticleEntity> query(Map<String, String> queryParams, int page, int pageSize) {
-    Pageable pageable = new PageRequest(page, pageSize, sort);
+    Pageable pageable = new PageRequest(page - 1, pageSize, sort);
     return articleDAO.findAll(Specifications.where(getWhereClause(queryParams)), pageable);
   }
 }
