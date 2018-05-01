@@ -14,6 +14,8 @@ public class ArticleValidator {
   @NotBlank(message = "content must not be empty", groups = { CreateGroup.class, UpdateGroup.class })
   @Size(max = 1024, message = "content length must less than or equal to 1024", groups = { CreateGroup.class, UpdateGroup.class })
   private String content; 
+
+  private String authorId;
   
   @NotNull(message = "page must not be null", groups = { QueryPageGroup.class })
   @Min(value = 1, message = "page must more than or equal to 1", groups = { QueryPageGroup.class })
@@ -38,6 +40,14 @@ public class ArticleValidator {
 
   public String getContent() {
     return content;
+  }
+
+  public void setAuthorId(String authorId) {
+    this.authorId = authorId;
+  }
+
+  public String getAuthorId() {
+    return authorId;
   }
 
   public void setPage(int page) {
