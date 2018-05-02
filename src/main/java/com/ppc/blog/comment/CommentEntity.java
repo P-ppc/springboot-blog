@@ -12,7 +12,7 @@ import com.ppc.blog.article.ArticleEntity;
 @Entity
 @Table(name = "t_comment")
 @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
-public class CommentEntity implements Serializeable {
+public class CommentEntity implements Serializable {
   private static final long serialVersionUID = 1L;
 
   @ManyToOne

@@ -12,6 +12,6 @@ import com.ppc.blog.comment.CommentEntity;
 public interface CommentDAO
 extends JpaSpecificationExecutor<CommentEntity>,
         CrudRepository<CommentEntity, String> {
-  CommentEntity findOneById(String, id);
+  CommentEntity findOneById(String id);
   List<CommentEntity> findByArticleIdOrderByCreatedTimeDesc(String articleId);
 }
