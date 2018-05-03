@@ -107,7 +107,7 @@ public class AccountRest {
     if (accountEntity == null) {
       return new Response("COMM_ERROR_NOTFOUND", "you have not login");
     } else if (!accountEntity.getId().equals(id)) {
-      return new Response("COMM_ERROR_NOPERMISSION", "you can't update this account"); 
+      return new Response("COMM_ERROR_NOPERMISSION", "you have no permission"); 
     } else if (!passwordEncoder.matches(account.getOldPassword(), accountEntity.getPassword())) {
       return new Response("COMM_ERROR_VALID", "old password error!");
     }

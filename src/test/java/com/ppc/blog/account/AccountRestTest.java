@@ -15,10 +15,13 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.mock.web.MockHttpSession;
 
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -101,16 +104,41 @@ public class AccountRestTest {
       .contentType(MediaType.APPLICATION_JSON_UTF8)
       .content(params.toString()))
       .andExpect(status().isOk())
-      .andDo(print())
       .andExpect(jsonPath("$.data.id").exists());
   }
-
+  
   @Test
   public void FShouldSignOutSuccess() throws Exception {
     System.out.println("6: -------------------------");
     mockMvc.perform(get("/signOut"))
       .andExpect(status().isOk())
       .andExpect(jsonPath("$.data", is(true)));
+  }
+
+  @Test
+  public void GShouldUpdateEmailSuccess() throws Exception {
+    System.out.println("7: -------------------------");
+    params = new JSONObject();
+    params.put("userName", "ppc");
+    params.put("password", "password");
+    MvcResult result = mockMvc.perform(post("/signIn")
+      .contentType(MediaType.APPLICATION_JSON_UTF8)
+      .content(params.toString()))
+      .andExpect(status().isOk())
+      .andDo(print())
+      .andReturn();
+    JSONObject response = JSONObject.parseObject(result.getResponse().getContentAsString());
+    String id = response.getJSONObject("data").getString("id");
+    params = new JSONObject();
+    params.put("email", "ppc@update.com");
+
+    mockMvc.perform(put("/accounts/" + id)
+      .contentType(MediaType.APPLICATION_JSON_UTF8)
+      .session((MockHttpSession) result.getRequest().getSession())
+      .content(params.toString()))
+      .andExpect(status().isOk())
+      .andDo(print())
+      .andExpect(jsonPath("$.data.email", is("ppc@update.com")));
   }
 
   @Test
