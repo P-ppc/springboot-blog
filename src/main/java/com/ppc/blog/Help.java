@@ -14,11 +14,14 @@ public class Help {
     + "2. /signUp <POST> \n"
     + "3. /signIn <POST> \n"
     + "4. /signOut <GET> \n"
-    + "5. /profile/${id} <GET/PUT> \n"
-    + "6. /profile/${id}/password <PUT>\n"
-    + "7. /profile/${id}/passwordreset <POST>\n"
-    + "8. /articles <GET/POST> \n"
-    + "9. /articles/{id} <GET/PUT/DELETE> \n"
-    + "10. /articles/${id}/comments <GET/POST> \n";
+    + "5. /accounts/{id} <GET/PUT> \n"
+    + "6. /accounts/{id}/password <PUT>\n"
+    + "7. /articles <POST> \n"
+    + "8. /articles/{id} <GET/PUT/DELETE> \n"
+    + "9. /articles/queryAll <POST> \n"
+    + "10. /articles/queryPage <POST> \n"
+    + "11. /articles/{id}/comments <GET> \n"
+    + "12. /comments <POST> \n"
+    + "13. /comments/{id} <GET> \n";
   }
 }
