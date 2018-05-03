@@ -1,6 +1,7 @@
 package com.ppc.blog.common;
 
 import javax.servlet.http.HttpServletRequest;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -16,9 +17,14 @@ public class GlobalExceptionHandler {
   public Response methodArgumentNotValidHandler(HttpServletRequest req,
     MethodArgumentNotValidException exception) throws Exception {
     /* 只显示第一个字段的错误信息 */
-    /* TODO: 采用fase_mode进行校验 */
     ObjectError error = exception.getBindingResult().getAllErrors().get(0); 
     return new Response("COMM_ERROR_VALID", error.getDefaultMessage());
+  }
+
+  @ExceptionHandler(value = HttpRequestMethodNotSupportedException.class)
+  public Response methodNotSupportedHandler(HttpServletRequest req,
+    HttpRequestMethodNotSupportedException exception) throws Exception {
+    return new Response("COMM_ERROR_UNSUPPORT", "unsupported method");
   }
 
   @ExceptionHandler(value = Exception.class)
