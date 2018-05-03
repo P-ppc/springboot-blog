@@ -5,6 +5,7 @@ import java.io.Serializable;
 
 import javax.persistence.*;
 import org.hibernate.annotations.GenericGenerator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import com.ppc.blog.account.AccountEntity;
 import com.ppc.blog.article.ArticleEntity;
@@ -17,6 +18,7 @@ public class CommentEntity implements Serializable {
 
   @ManyToOne
   @JoinColumn(name = "article_id", nullable = false, updatable = false)
+  @JsonIgnore
   private ArticleEntity article;
 
   @ManyToOne
